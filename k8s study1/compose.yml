@@ -1,0 +1,30 @@
+services:
+  web1:
+    build: flask/
+    hostname: web1
+    ports:
+      - "81:5000"
+    volumes:
+      - ./flask/src:/app/src
+    environment:
+      FLASK_APP: src/app.py
+  web2:
+    build: flask/
+    hostname: web2
+    ports:
+      - "82:5000"
+    volumes:
+      - ./flask/src:/app/src
+    environment:
+      FLASK_APP: src/app.py
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  nginx:
+    build: nginx/
+    ports:
+      - "80:80"
+    depends_on:
+      - web1
+      - web2
